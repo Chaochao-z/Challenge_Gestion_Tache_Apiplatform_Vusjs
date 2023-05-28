@@ -78,6 +78,12 @@ services:
 # Mercure is installed as a Caddy module, prevent the Flex recipe from installing another service
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
+  adminer:
+    image: adminer
+    depends_on:
+      - database
+    ports:
+      - 8080:8080
 
 volumes:
   php_socket:
