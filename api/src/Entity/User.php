@@ -6,6 +6,8 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use App\Controller\RegisterController;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -55,6 +57,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?\DateTimeImmutable $UpdatedAt = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['user_register'])]
+    private ?string $mail = null;
+
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: ListeTache::class)]
+    private Collection $LesLiestTaches;
+
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: UserTache::class)]
+    private Collection $userTaches;
+
+    public function __construct()
+    {
+        if ($this->getCreatedAt() == null) {
+            $this->setCreatedAt(new \DateTimeImmutable());
+        }
+        $this->setUpdatedAt(new \DateTimeImmutable());
+        $this->LesLiestTaches = new ArrayCollection();
+        $this->userTaches = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -170,6 +192,78 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt(\DateTimeImmutable $UpdatedAt): self
     {
         $this->UpdatedAt = $UpdatedAt;
+
+        return $this;
+    }
+
+    public function getMail(): ?string
+    {
+        return $this->mail;
+    }
+
+    public function setMail(string $mail): self
+    {
+        $this->mail = $mail;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ListeTache>
+     */
+    public function getLesLiestTaches(): Collection
+    {
+        return $this->LesLiestTaches;
+    }
+
+    public function addLesLiestTach(ListeTache $lesLiestTach): self
+    {
+        if (!$this->LesLiestTaches->contains($lesLiestTach)) {
+            $this->LesLiestTaches->add($lesLiestTach);
+            $lesLiestTach->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLesLiestTach(ListeTache $lesLiestTach): self
+    {
+        if ($this->LesLiestTaches->removeElement($lesLiestTach)) {
+            // set the owning side to null (unless already changed)
+            if ($lesLiestTach->getUserId() === $this) {
+                $lesLiestTach->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserTache>
+     */
+    public function getUserTaches(): Collection
+    {
+        return $this->userTaches;
+    }
+
+    public function addUserTach(UserTache $userTach): self
+    {
+        if (!$this->userTaches->contains($userTach)) {
+            $this->userTaches->add($userTach);
+            $userTach->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserTach(UserTache $userTach): self
+    {
+        if ($this->userTaches->removeElement($userTach)) {
+            // set the owning side to null (unless already changed)
+            if ($userTach->getUserId() === $this) {
+                $userTach->setUserId(null);
+            }
+        }
 
         return $this;
     }
