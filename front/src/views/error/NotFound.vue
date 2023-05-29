@@ -97,6 +97,9 @@
             <h3>Page Not Found - lets take you <a href="/">BACK</a></h3>
         </div>
     </div>
+    <div class="d-flex justify-content-center">
+        <a href="/" type="button" class="btn btn-primary text-decoration-none pl-5 pr-5 m-5" style="color: #e3f2fd;font-size: 2em">Retour à l'accueil</a>
+    </div>
 </template>
 
 <script>

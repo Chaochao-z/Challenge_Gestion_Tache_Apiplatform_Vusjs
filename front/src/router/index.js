@@ -5,6 +5,12 @@ import NotFound from '../views/error/NotFound.vue'
 import DashboardLayout from "../views/dashboard/DashboardLayout.vue";
 import DashboardHome from "../views/dashboard/DashoboardHome.vue";
 import PublicLayout from "../views/public/PublicLayout.vue";
+import AdminLayout from "../views/admin/AdminLayout.vue";
+import AdminHome from "../views/admin/AdminHome.vue";
+import UserEdit from "../views/admin/users/UserEdit.vue";
+import userEdit from "../views/admin/users/UserEdit.vue";
+import {authGuard} from "../_helpers/auth-guard";
+import login from "../views/auth/Login.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,7 +28,17 @@ const router = createRouter({
       name:'dashboardhome',
       component: DashboardLayout,
       children: [
-        { path: '/dashboard', name: 'dashboardhome', component: DashboardHome}
+        { path: '', name: 'dashboardhome', component: DashboardHome}
+      ]
+    },
+    {
+      path: '/admin',
+      name: 'AdminHome',
+      component: AdminLayout,
+      children: [
+        { path: '' , name: 'adminhome', component: AdminHome },
+        { path: 'user/edit/:id(\\d+)' , name: 'useredit', component: userEdit, props: true}
+
       ]
     },
     {
@@ -37,4 +53,8 @@ const router = createRouter({
   ]
 })
 
+router.beforeEach(to, from, next) =>{
+  console.log(to, form)
+  next()
+}
 export default router

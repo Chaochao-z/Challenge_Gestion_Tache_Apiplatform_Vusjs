@@ -1,11 +1,10 @@
 <template>
-    <h1>Admin layout</h1>
-    <RouterView />
+    <h1>Users Index</h1>
 </template>
 
 <script>
     export default {
-        name: 'AdminLayout'
+        name: 'userindex'
     }
 </script>
 
