@@ -29,5 +29,8 @@
 </style>
 
 <script>
+    export default {
+        name: 'dashoboardlayout'
+    }
 
 </script>
