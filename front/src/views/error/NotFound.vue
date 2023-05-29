@@ -101,6 +101,9 @@
 
 <script>
 export default {
+    mounted() {
+        document.title="404 Page Not Found"
+    },
     name: 'NotFound'
 }
 </script>
