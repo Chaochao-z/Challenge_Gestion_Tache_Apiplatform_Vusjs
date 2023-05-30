@@ -33,7 +33,7 @@ const router = createRouter({
     },
     {
       path: '/admin',
-      name: 'AdminHome',
+      name: 'Admin',
       component: AdminLayout,
       children: [
         { path: '' , name: 'adminhome', component: AdminHome },
@@ -44,7 +44,7 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: () => import("../views/auth/Login.vue")
     },
     {
       path:'/:pathMatch(.*)*',component:NotFound
@@ -53,8 +53,12 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach(to, from, next) =>{
-  console.log(to, form)
+router.beforeEach((to, from, next) =>{
+  console.log(to.matched)
+  if (to.matched[0].name == "Admin")
+  {
+    authGuard()
+  }
   next()
-}
+})
 export default router
