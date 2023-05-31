@@ -24,12 +24,12 @@ const is_login = ref(false)
             {
                 displayMsg({msg: "Connexion Réussie", type:"success"})
                 setTimeout(()=>{
-                    router.push('/')
+
 
                 },2000)
 
             }else {
-                throw new Error("Une erreur est survenue")
+                throw new Error("Erreur d'identifiant ou Mot de passe")
             }
         }catch (e) {
             console.error(e)

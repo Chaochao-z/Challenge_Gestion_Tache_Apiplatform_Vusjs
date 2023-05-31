@@ -2,6 +2,7 @@ import {API_URL} from "../constants/urls";
 import {defineStore} from "pinia";
 import AuthService from "../services/authService";
 import jwtDecode from "jwt-decode";
+import {TOKEN_STORAGE_KEY} from "../constants/storage_keys";
 
 const checkToken = (token) => {
   try {
@@ -33,10 +34,12 @@ export const userAuthStore = defineStore("auth",()=>{
 
     const res = await AuthService.login(username,password)
     if (res && res?.token) {
+      console.log(res.token)
       const decoded = checkToken(res.token)
       if (decoded){
         localStorage.setItem(TOKEN_STORAGE_KEY, res.token)
-        userData.value = { ...decoded, token: res.token}
+        localStorage.setItem('token',res.token)
+        UserData.value = { ...decoded, token: res.token}
         return true
       }
     }
