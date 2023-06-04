@@ -4,13 +4,16 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse p-2" id="navbarTogglerDemo01">
-            <a class="navbar-brand" href="#">MyTache</a>
+            <a class="navbar-brand" href="#">
+                <img src="../../assets/tache.png" width="60">
+                MyTache
+            </a>
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="#">Mes Tâches <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link" href="#">Mes Listes</a>
                 </li>
 
             </ul>

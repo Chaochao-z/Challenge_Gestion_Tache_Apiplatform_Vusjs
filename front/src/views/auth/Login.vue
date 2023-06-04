@@ -17,7 +17,12 @@ const is_login = ref(false)
         const { username,password } = formUser;
         try {
             if(!username) throw new Error("Veuillez Saisir Username")
-            if(!password) throw new Error("Veuillez Saisir Password")
+            if(!password)
+            {
+                const aze = document.getElementById("passwordLabel")
+                aze.style.color = "red"
+                throw new Error("Veuillez Saisir Password")
+            }
 
             const res = await userAuthStore().login(username, password)
             if (res === true)
@@ -49,7 +54,7 @@ const is_login = ref(false)
             <InputField type="text" placeholder="Username" name="username" id="username" v-model="formUser.username" />
         </div>
         <div class="formGroup">
-            <label>Password</label>
+            <label id="passwordLabel">Password</label>
             <InputField type="password" placeholder="Mots de passe" name="password" id="password" v-model="formUser.password" />
         </div>
         <div class="formGroup">

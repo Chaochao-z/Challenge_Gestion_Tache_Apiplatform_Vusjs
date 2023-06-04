@@ -56,7 +56,6 @@ const router = createRouter({
           displayMsg({msg:"Vous étes déjà connecté",type:"error"})
           return next({ name: "home" });
         }
-        console.log(CheckLogged())
 
         return next();
       }
@@ -71,7 +70,6 @@ const router = createRouter({
           displayMsg({msg:"Vous étes déjà connecté",type:"error"})
           return next({ name: "home" });
         }
-        console.log(CheckLogged())
 
         return next();
       }
