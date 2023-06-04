@@ -22,6 +22,28 @@ class AuthService {
       return false;
     }
   }
+
+  async signup(payload){
+    try{
+      console.log(payload)
+      const res = await fetch(`${API_URL}/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+      if(res.status === 201){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }catch(e){
+      console.error(e.message);
+      return false;
+    }
+  }
 }
 
 export default new AuthService()

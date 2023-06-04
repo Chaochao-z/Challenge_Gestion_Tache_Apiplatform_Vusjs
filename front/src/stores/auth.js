@@ -61,11 +61,25 @@ export const userAuthStore = defineStore("auth",()=>{
     return false
   }
 
+  async function register(payload) {
+    const { username, email, password, role } = payload;
+    if (!email || !username || !role) {
+      return;
+    }
+    const res = await AuthService.signup({
+      username,
+      email,
+      password,
+      role: [role],
+    });
+    return res;
+  }
+
   function logout() {
     localStorage.removeItem(TOKEN_STORAGE_KEY);
     UserData.value = UserDataNull;
     router.push({ name: "homeview" });
   }
 
-  return {login, logout, isLogged,UserData, tryLogin}
+  return {login, logout, isLogged,UserData, tryLogin,register}
 })
