@@ -11,6 +11,11 @@ import UserEdit from "../views/admin/users/UserEdit.vue";
 import userEdit from "../views/admin/users/UserEdit.vue";
 import {authGuard} from "../_helpers/auth-guard";
 import login from "../views/auth/Login.vue";
+import {CheckLogged} from "@/services/checkLogged";
+import {displayMsg} from "@/utils/toast";
+import {authUser} from "@/_helpers/auth-user";
+import Register from "@/views/auth/Register.vue";
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,7 +25,7 @@ const router = createRouter({
       name: 'home',
       component: PublicLayout,
       children: [
-        { path: '/', name: 'home', component: HomeView}
+        { path: '', name: 'homeview', component: HomeView}
       ]
     },
     {
@@ -44,8 +49,34 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import("../views/auth/Login.vue")
+      component: () => import("../views/auth/Login.vue"),
+      beforeEnter: async(to, from, next) =>{
+        if (CheckLogged())
+        {
+          displayMsg({msg:"Vous étes déjà connecté",type:"error"})
+          return next({ name: "home" });
+        }
+        console.log(CheckLogged())
+
+        return next();
+      }
     },
+    {
+      path:'/register',
+      name:'register',
+      component: Register,
+      beforeEnter: async(to, from, next) =>{
+        if (CheckLogged())
+        {
+          displayMsg({msg:"Vous étes déjà connecté",type:"error"})
+          return next({ name: "home" });
+        }
+        console.log(CheckLogged())
+
+        return next();
+      }
+    },
+
     {
       path:'/:pathMatch(.*)*',component:NotFound
     }
@@ -55,9 +86,13 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) =>{
   console.log(to.matched)
-  if (to.matched[0].name == "Admin")
+  if (to.matched[0].name === "Admin")
   {
     authGuard()
+  }
+  if (to.matched[0].name ==="dashboardhome")
+  {
+    authUser()
   }
   next()
 })

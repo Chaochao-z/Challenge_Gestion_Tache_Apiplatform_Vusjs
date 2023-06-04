@@ -6,11 +6,11 @@ class AuthService {
       const res = await fetch(`${API_URL}/authentication_token`,{
         headers: {
           "Content-Type" : "application/json",
+          'Access-Control-Allow-Origin': '*',
         },
         method:"POST",
         body: JSON.stringify({username,password})
       })
-      console.log(res)
       if (res.status === 200){
         console.log(res)
         return res.json();

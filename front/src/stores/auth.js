@@ -1,8 +1,10 @@
-import {API_URL} from "../constants/urls";
+import {API_URL} from "@/constants/urls";
 import {defineStore} from "pinia";
 import AuthService from "../services/authService";
+import {computed, ref} from "vue";
 import jwtDecode from "jwt-decode";
-import {TOKEN_STORAGE_KEY} from "../constants/storage_keys";
+import {TOKEN_STORAGE_KEY} from "@/constants/storage_keys";
+import router from "@/router";
 
 const checkToken = (token) => {
   try {
@@ -17,7 +19,7 @@ const checkToken = (token) => {
   }
 };
 
-const UserData = {
+const UserDataNull = {
   id:null,
   username:null,
   email:null,
@@ -26,6 +28,20 @@ const UserData = {
 }
 
 export const userAuthStore = defineStore("auth",()=>{
+  const UserData = ref(UserDataNull);
+  const isLogged = computed(() => !!UserData.value.token);
+
+  function tryLogin() {
+    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (!token) return;
+    const decoded = checkToken(token);
+    if( !decoded ){
+      localStorage.removeItem(TOKEN_STORAGE_KEY);
+      UserData.value = UserDataNull;
+      return;
+    }
+    UserData.value = { ...decoded, token };
+  }
 
   async function login(username, password){
     if (!username || !password){
@@ -38,7 +54,6 @@ export const userAuthStore = defineStore("auth",()=>{
       const decoded = checkToken(res.token)
       if (decoded){
         localStorage.setItem(TOKEN_STORAGE_KEY, res.token)
-        localStorage.setItem('token',res.token)
         UserData.value = { ...decoded, token: res.token}
         return true
       }
@@ -46,5 +61,11 @@ export const userAuthStore = defineStore("auth",()=>{
     return false
   }
 
-  return {login}
+  function logout() {
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
+    UserData.value = UserDataNull;
+    router.push({ name: "homeview" });
+  }
+
+  return {login, logout, isLogged,UserData, tryLogin}
 })

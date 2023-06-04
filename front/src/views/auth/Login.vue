@@ -1,6 +1,6 @@
 <script setup>
 import {userAuthStore} from "../../stores/auth";
-import {displayMsg} from "../../utils/toast";
+import {displayMsg} from "@/utils/toast";
 import router from "../../router";
 import {reactive,ref} from "vue";
 import InputField from "../../components/Common/InputField.vue";
@@ -24,7 +24,7 @@ const is_login = ref(false)
             {
                 displayMsg({msg: "Connexion Réussie", type:"success"})
                 setTimeout(()=>{
-
+                    router.push('/')
 
                 },2000)
 
