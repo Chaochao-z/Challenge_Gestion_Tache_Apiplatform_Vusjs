@@ -15,6 +15,7 @@ import {CheckLogged} from "@/services/checkLogged";
 import {displayMsg} from "@/utils/toast";
 import {authUser} from "@/_helpers/auth-user";
 import Register from "@/views/auth/Register.vue";
+import AdminUserIndex from "@/views/admin/users/UserIndex.vue"
 
 
 const router = createRouter({
@@ -42,6 +43,7 @@ const router = createRouter({
       component: AdminLayout,
       children: [
         { path: '' , name: 'adminhome', component: AdminHome },
+        { path: 'users', name: 'AdminUsers' , component: AdminUserIndex },
         { path: 'user/edit/:id(\\d+)' , name: 'useredit', component: userEdit, props: true}
 
       ]

@@ -11,18 +11,32 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td></td>
+            <tr v-for="user in users" :key="user.id">
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.mail}}</td>
+                <td>{{ user.created }}</td>
             </tr>
         </tbody>
     </table>
 </template>
 
 <script>
+import userService from "@/services/userService";
     export default {
-        name: 'userindex',
+        name: 'AdminUserIndex',
+        data(){
+            return{
+                users:[]
+            }
+        },
         mounted() {
-
+            userService.getAllUsers()
+                .then(res =>{
+                    this.users = res['hydra:member']
+                    console.log(this.users)
+                })
+                .catch(err => console.log(err))
         }
     }
 </script>

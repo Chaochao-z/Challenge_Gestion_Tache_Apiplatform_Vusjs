@@ -130,6 +130,10 @@
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/sweetrdf/easyrdf 2" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/doctrine/data-fixtures" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/doctrine/doctrine-fixtures-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/symfony/mime" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/symfony/polyfill-intl-idn" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/symfony/mailer" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/egulias/email-validator" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

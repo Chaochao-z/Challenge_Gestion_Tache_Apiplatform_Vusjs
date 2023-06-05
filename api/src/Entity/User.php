@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Get;
 use App\Controller\RegisterController;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,6 +16,16 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ApiResource]
+#[Get(
+    normalizationContext: [
+        'groups' => ['user_get']
+    ],
+    security: 'is_granted("ROLE_ADMIN") or object == user'
+)]
+#[GetCollection(
+    security: 'is_granted("ROLE_ADMIN")'
+
+)]
 #[Post(
     uriTemplate: '/register',
     controller: RegisterController::class,
@@ -28,14 +40,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user_register'])]
+    #[Groups(['user_register','user_get','user_collection'])]
     private ?int $id = null;
 
-    #[Groups(['user_register'])]
+    #[Groups(['user_register','user_get','user_collection'])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
 
-    #[Groups(['user_register'])]
+    #[Groups(['user_register','user_get','user_collection'])]
     #[ORM\Column]
     private array $roles = [];
 
@@ -53,13 +65,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $token_echeance = null;
 
     #[ORM\Column]
+    #[Groups(['user_get','user_collection'])]
     private ?\DateTimeImmutable $CreatedAt = null;
 
     #[ORM\Column]
+    #[Groups(['user_get','user_collection'])]
     private ?\DateTimeImmutable $UpdatedAt = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user_register'])]
+    #[Groups(['user_register','user_get','user_collection'])]
     private ?string $mail = null;
 
     #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: ListeTache::class)]
@@ -67,6 +81,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: UserTache::class)]
     private Collection $userTaches;
+
+    #[ORM\Column]
+    private ?bool $isVerified = null;
 
     public function __construct()
     {
@@ -76,6 +93,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->setUpdatedAt(new \DateTimeImmutable());
         $this->LesLiestTaches = new ArrayCollection();
         $this->userTaches = new ArrayCollection();
+        if($this->isVerified == null){
+            $this->isVerified = false;
+        }
     }
 
     public function getId(): ?int
@@ -264,6 +284,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $userTach->setUserId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsVerified(): ?bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }

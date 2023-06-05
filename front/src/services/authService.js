@@ -1,4 +1,6 @@
 import {API_URL} from "@/constants/urls";
+import {displayMsg} from "@/utils/toast";
+import router from "@/router";
 
 class AuthService {
   async login(username, password){
@@ -25,7 +27,6 @@ class AuthService {
 
   async signup(payload){
     try{
-      console.log(payload)
       const res = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: {
@@ -34,9 +35,12 @@ class AuthService {
         body: JSON.stringify(payload)
       });
       if(res.status === 201){
+        displayMsg({ msg: "Inscription réussie", type: "success" });
         return true;
       }
       else{
+        displayMsg({msg:"Email ou Username Existe déjà", type:"error"})
+        router.push('register')
         return false;
       }
     }catch(e){

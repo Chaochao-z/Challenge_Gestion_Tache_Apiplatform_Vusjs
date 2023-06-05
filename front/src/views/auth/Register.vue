@@ -45,17 +45,51 @@ export default {
     },
     methods:
         {
+            isPasswordStrong(password) {
+                const minLength = 8; // Longueur minimale du mot de passe
+                const uppercaseRegex = /[A-Z]/; // Au moins une lettre majuscule
+                const lowercaseRegex = /[a-z]/; // Au moins une lettre minuscule
+                const digitRegex = /\d/; // Au moins un chiffre
+                const specialCharRegex = /[$@$!%*?&]/; // Au moins un caractère spécial
+
+                if (password.length < minLength) {
+                    return false;
+                }
+
+                if (!uppercaseRegex.test(password)) {
+                    return false;
+                }
+
+                if (!lowercaseRegex.test(password)) {
+                    return false;
+                }
+
+                if (!digitRegex.test(password)) {
+                    return false;
+                }
+
+                if (!specialCharRegex.test(password)) {
+                    return false;
+                }
+
+                return true;
+            },
             onSubmit(){
 
                 try {
                     const {username , password,passwordConfirmation,email} = this.formUser
-                    if (username.length < 1) {
-                        displayMsg({msg:"Veuillez saisir un Username",type:"error"})
+                    if (username.length < 7) {
+                        displayMsg({msg:"Veuillez saisir un Username minumun 8 Caractères",type:"error"})
                         throw new Error("Veuillez saisir un Username");
                     }
                     if (password.length < 1) {
                         displayMsg({msg:"Veuillez saisir un mot de passe",type:"error"})
                         throw new Error("Veuillez saisir un mot de passe");
+                    }
+
+                    if (!this.isPasswordStrong(password)) {
+                        displayMsg({ msg: "Le mot de passe doit être suffisamment fort.", type: "error" });
+                        throw new Error("Le mot de passe doit être suffisamment fort.");
                     }
 
                     if (password !== passwordConfirmation) {
@@ -72,7 +106,6 @@ export default {
 
                     const res = this.store.register({ ...this.formUser, role: "ROLE_USER" });
                     if (res) {
-                        displayMsg({ msg: "Inscription réussie", type: "success" });
                         //todo redirect to home
                         setTimeout(() => {
                             router.push({ name: 'home' });
