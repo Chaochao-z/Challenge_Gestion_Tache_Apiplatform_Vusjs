@@ -17,6 +17,8 @@ import {authUser} from "@/_helpers/auth-user";
 import Register from "@/views/auth/Register.vue";
 import AdminUserIndex from "@/views/admin/users/UserIndex.vue"
 import VerifyAccount from "@/views/auth/VerifyAccount.vue";
+import AdminTacheIndex from "@/views/admin/tache/TacheIndex.vue"
+import AdminTacheEdit from "@/views/admin/tache/TacheEdit.vue"
 
 
 const router = createRouter({
@@ -45,8 +47,9 @@ const router = createRouter({
       children: [
         { path: '' , name: 'adminhome', component: AdminHome },
         { path: 'users', name: 'AdminUsers' , component: AdminUserIndex },
-        { path: 'user/edit/:id(\\d+)' , name: 'admin-user', component: userEdit, props: true}
-
+        { path: 'user/edit/:id(\\d+)' , name: 'admin-user', component: userEdit, props: true},
+        { path: 'taches', name:'AdminTacheIndex', component:AdminTacheIndex },
+        { path: 'tache/edit/:id(\\d+)' , name:'AdminTacheEdit', component: AdminTacheEdit, props: true}
       ]
     },
     {
