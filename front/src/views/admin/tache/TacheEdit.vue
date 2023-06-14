@@ -59,7 +59,7 @@ export default {
             return `${year}-${month}-${day} ${hours}:${minutes}`;
         },
         deleteTache(){
-            if (window.confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')) {
+            if (window.confirm('Êtes-vous sûr de vouloir supprimer cette Liste de tâche ?')) {
                 tacheService.deleteTache(this.tache.id)
                     .then(
                         displayMsg({msg: "Tache a bien été supprimer", type:"success"})

@@ -1,12 +1,12 @@
 import authHeader from "@/services/authHeader";
 import {API_URL} from "@/constants/urls";
 
+class ListeTachesService{
 
-class TacheService{
-  async getAllTache(){
+  async getAllListeTache(){
     try {
       const bearer = authHeader()
-      const res= await fetch(`${API_URL}/taches`,{
+      const res= await fetch(`${API_URL}/liste_taches`,{
         headers: {
           "Content-Type": "application/json",
           ...authHeader()
@@ -25,10 +25,10 @@ class TacheService{
     }
   }
 
-  async getSingleTache(id){
+  async getSingleListeTache(id){
     try {
       const bearer = authHeader()
-      const res= await fetch(`${API_URL}/taches/${id}`,{
+      const res= await fetch(`${API_URL}/liste_taches/${id}`,{
         headers: {
           "Content-Type": "application/json",
           ...authHeader()
@@ -47,15 +47,15 @@ class TacheService{
     }
   }
 
-  async updateTache(tache){
+  async updateListeTache(listeTache){
     try {
-      const res = await fetch(`${API_URL}/taches/${tache.id}`, {
+      const res = await fetch(`${API_URL}/liste_taches/${listeTache.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/merge-patch+json",
           ...authHeader()
         },
-        body: JSON.stringify(tache)
+        body: JSON.stringify(listeTache)
       });
 
       return true;
@@ -68,9 +68,9 @@ class TacheService{
     }
   }
 
-  async deleteTache(id){
+  async deleteListeTache(id){
     try {
-      const res = await fetch(`${API_URL}/taches/${id}`, {
+      const res = await fetch(`${API_URL}/liste_taches/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -91,33 +91,6 @@ class TacheService{
     }
   }
 
-  async newTache(tache){
-    try {
-      const res= await fetch(`${API_URL}/taches`,{
-        method:"POST",
-        headers:{
-          "Content-Type": "application/json",
-          ...authHeader()
-        },
-        body: JSON.stringify(tache)
-      })
-
-      if(res === 201)
-      {
-        return true
-      }
-      else {
-        return false
-      }
-
-    }
-    catch (e){
-      console.error(e.message)
-      return false
-    }
-
-  }
-
 }
 
-export default new TacheService()
+export default new ListeTachesService()

@@ -19,6 +19,9 @@ import AdminUserIndex from "@/views/admin/users/UserIndex.vue"
 import VerifyAccount from "@/views/auth/VerifyAccount.vue";
 import AdminTacheIndex from "@/views/admin/tache/TacheIndex.vue"
 import AdminTacheEdit from "@/views/admin/tache/TacheEdit.vue"
+import AdminListeTacheIndex from "@/views/admin/listeTache/ListeTacheIndex.vue"
+import AdminListeTacheEdit from "@/views/admin/listeTache/ListeTacheEdit.vue"
+import AdminTacheNew from "@/views/admin/tache/TacheNew.vue"
 
 
 const router = createRouter({
@@ -49,7 +52,10 @@ const router = createRouter({
         { path: 'users', name: 'AdminUsers' , component: AdminUserIndex },
         { path: 'user/edit/:id(\\d+)' , name: 'admin-user', component: userEdit, props: true},
         { path: 'taches', name:'AdminTacheIndex', component:AdminTacheIndex },
-        { path: 'tache/edit/:id(\\d+)' , name:'AdminTacheEdit', component: AdminTacheEdit, props: true}
+        { path: 'tache/edit/:id(\\d+)' , name:'AdminTacheEdit', component: AdminTacheEdit, props: true},
+        { path: 'tache/new', name: 'AdminTacheNew', component: AdminTacheNew},
+        { path: 'liste-taches', name: 'AdminListeTacheIndex', component: AdminListeTacheIndex},
+        { path: 'liste-taches/edit/:id(\\d+)', name:'AdminListeTacheEdit',component: AdminListeTacheEdit, props:true}
       ]
     },
     {
