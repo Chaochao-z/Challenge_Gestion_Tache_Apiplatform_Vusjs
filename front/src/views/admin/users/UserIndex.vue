@@ -8,6 +8,7 @@
                 <th>Username</th>
                 <th>Email</th>
                 <th>Création</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -15,7 +16,9 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.mail}}</td>
-                <td>{{ user.created }}</td>
+                <td>{{ moment(user.CreatedAt).format("DD-MM-YYYY") }}</td>
+                <td> <Btn :type="'link'" :to="{ name: 'admin-user', params: { id: user.id } }">See or edit</Btn>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -23,18 +26,22 @@
 
 <script>
 import userService from "@/services/userService";
+import moment from "moment";
+import Btn from "@/components/Common/Btn.vue";
     export default {
         name: 'AdminUserIndex',
+        components: {Btn},
         data(){
             return{
-                users:[]
+                users:[],
+                moment
             }
         },
         mounted() {
             userService.getAllUsers()
                 .then(res =>{
                     this.users = res['hydra:member']
-                    console.log(this.users)
+                    console.log(res['hydra:member'])
                 })
                 .catch(err => console.log(err))
         }

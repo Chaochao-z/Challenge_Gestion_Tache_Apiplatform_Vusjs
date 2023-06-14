@@ -16,6 +16,7 @@ import {displayMsg} from "@/utils/toast";
 import {authUser} from "@/_helpers/auth-user";
 import Register from "@/views/auth/Register.vue";
 import AdminUserIndex from "@/views/admin/users/UserIndex.vue"
+import VerifyAccount from "@/views/auth/VerifyAccount.vue";
 
 
 const router = createRouter({
@@ -44,7 +45,7 @@ const router = createRouter({
       children: [
         { path: '' , name: 'adminhome', component: AdminHome },
         { path: 'users', name: 'AdminUsers' , component: AdminUserIndex },
-        { path: 'user/edit/:id(\\d+)' , name: 'useredit', component: userEdit, props: true}
+        { path: 'user/edit/:id(\\d+)' , name: 'admin-user', component: userEdit, props: true}
 
       ]
     },
@@ -75,6 +76,11 @@ const router = createRouter({
 
         return next();
       }
+    },
+    {
+      path: "/verify-account/:token",
+      name: "verify-account",
+      component:()=>import('../views/auth/VerifyAccount.vue')
     },
 
     {

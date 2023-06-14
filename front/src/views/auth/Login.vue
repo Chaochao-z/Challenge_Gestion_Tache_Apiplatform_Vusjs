@@ -25,7 +25,7 @@ const is_login = ref(false)
             }
 
             const res = await userAuthStore().login(username, password)
-            if (res === true)
+            if (res)
             {
                 displayMsg({msg: "Connexion Réussie", type:"success"})
                 setTimeout(()=>{
