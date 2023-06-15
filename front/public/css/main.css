@@ -1,0 +1,26 @@
+.adminIndexBox{
+    background: linear-gradient(#6e68ee,#20bdce);
+    height: 100vh;
+}
+
+.adminEditBox{
+    background: linear-gradient(#6e68ee,#20bdce);
+    height: 100vh;
+}
+
+.adminScrollBox
+{
+    background-color: rgba(249,248,253,0.12);
+    overflow-y: scroll;
+    height: 85vh;
+    width: 100%;
+}
+
+.adminBlockShow{
+    background-color: white;
+    width: 900px;
+    height: 200px;
+    margin: 10px auto;
+    border-radius: 20px;
+    padding: 20px;
+}

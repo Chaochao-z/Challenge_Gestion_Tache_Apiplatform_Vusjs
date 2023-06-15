@@ -91,6 +91,33 @@ class ListeTachesService{
     }
   }
 
+  async newListeTache(ListeTache){
+    try {
+      const res= await fetch(`${API_URL}/liste_taches`,{
+        method:"POST",
+        headers:{
+          "Content-Type": "application/json",
+          ...authHeader()
+        },
+        body: JSON.stringify(ListeTache)
+      })
+
+      if(res === 201)
+      {
+        return true
+      }
+      else {
+        return false
+      }
+
+    }
+    catch (e){
+      console.error(e.message)
+      return false
+    }
+
+  }
+
 }
 
 export default new ListeTachesService()

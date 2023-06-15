@@ -22,7 +22,7 @@ import AdminTacheEdit from "@/views/admin/tache/TacheEdit.vue"
 import AdminListeTacheIndex from "@/views/admin/listeTache/ListeTacheIndex.vue"
 import AdminListeTacheEdit from "@/views/admin/listeTache/ListeTacheEdit.vue"
 import AdminTacheNew from "@/views/admin/tache/TacheNew.vue"
-
+import AdminListeTacheNew from "@/views/admin/listeTache/ListeTacheNew.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -55,7 +55,8 @@ const router = createRouter({
         { path: 'tache/edit/:id(\\d+)' , name:'AdminTacheEdit', component: AdminTacheEdit, props: true},
         { path: 'tache/new', name: 'AdminTacheNew', component: AdminTacheNew},
         { path: 'liste-taches', name: 'AdminListeTacheIndex', component: AdminListeTacheIndex},
-        { path: 'liste-taches/edit/:id(\\d+)', name:'AdminListeTacheEdit',component: AdminListeTacheEdit, props:true}
+        { path: 'liste-taches/edit/:id(\\d+)', name:'AdminListeTacheEdit',component: AdminListeTacheEdit, props:true},
+        { path: 'liste-taches/new', name: 'AdminListeTacheNew' , component: AdminListeTacheNew}
       ]
     },
     {
