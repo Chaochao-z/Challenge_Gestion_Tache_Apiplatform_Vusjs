@@ -1,7 +1,7 @@
-<template xmlns="http://www.w3.org/1999/html">
+<template>
     <div style="width: 100%" class="p-5 adminEditBox">
         <h1 class="text-light text-center mb-3">Tache : {{ tache.titre }}</h1>
-        <form @submit.prevent="AdminTacheEdit()" class="bg-light m-auto p-5 rounded" style="width: 800px;">
+        <form @submit.prevent="DashboardTacheEdit()" class="bg-light m-auto p-5 rounded" style="width: 800px;">
             <h2>Update Form Task</h2>
             <div class="d-flex justify-content-between mt-3 mb-3 align-items-center">
                 <label for="tache_titre" style="width: 200px">Titre :</label>
@@ -32,12 +32,6 @@
                 </select>
             </div>
             <div class="d-flex justify-content-between mt-3 mb-3 align-items-center">
-                <label for="tache_auteur" style="width: 200px">Auteur : </label>
-                <select class="form-control" id="tache_auteur" v-model="tache_user_auteur.userId">
-                    <option v-for="user in users" :key="user.id" :value="user['@id']">{{ user.username }}</option>
-                </select>
-            </div>
-            <div class="d-flex justify-content-between mt-3 mb-3 align-items-center">
                 <label for="tache_observateur" style="width: 200px">Observateur : </label>
                 <select class="form-control" id="tache_observateur" v-model="tache_user_observateur.userId">
                     <option v-for="user in users" :key="user.id" :value="user['@id']">{{ user.username }}</option>
@@ -59,48 +53,45 @@
             </button>
         </form>
     </div>
-
 </template>
 
 <script>
-
 import tacheService from "@/services/tacheService";
 import {displayMsg} from "@/utils/toast";
-import router from "@/router";
 import userTacheService from "@/services/userTacheService";
+import router from "@/router";
 import userService from "@/services/userService";
 import ListeTachesService from "@/services/listeTachesService";
+import {userAuthStore} from "@/stores/auth";
+
 export default {
-    name: "AdminTacheEdit",
+    name: "DashboardTacheEdit",
     props:['id'],
     data(){
         return{
             tache:{},
+            auteur:{},
             tache_user_observateur:{},
-            tache_user_auteur:{},
             users:{},
-            liste_tache:{}
+            liste_tache:{},
+            authUser: userAuthStore(),
+            me:{}
         }
     },
     methods:{
-        AdminTacheEdit(){
+        DashboardTacheEdit(){
             this.tache.priotity = parseInt(this.tache.priotity)
-            this.tache.propid = parseInt(this.tache_user_auteur.userId.split('/')[2])
             tacheService.updateTache(this.tache)
                 .then(displayMsg({msg: "Tache a bien été modifier", type:"success"}))
-                .catch(err => console.log(err))
-            if (this.tache_user_auteur.id !== undefined)
-            {
-                userTacheService.updateUserTache(this.tache_user_auteur)
-                    .then()
-                    .catch(err => console.log(err))
-            }
-            else {
-                this.tache_user_auteur.role="auteur"
-                this.tache_user_auteur.tacheid= this.tache.id
-                this.tache_user_auteur.userid=parseInt(this.tache_user_auteur.userId.split('/')[2])
-                userTacheService.newUserTache(this.tache_user_auteur)
-            }
+                .catch(err => {
+                        displayMsg({msg:"Titre déjà existé",type:"error"})
+                        console.log(err)}
+                    )
+
+            this.auteur.role="auteur"
+            this.auteur.tacheid =this.tache.id
+            this.auteur.userid = this.me.id
+
 
             if (this.tache_user_observateur.id !== undefined)
             {
@@ -126,14 +117,14 @@ export default {
             return `${year}-${month}-${day} ${hours}:${minutes}`;
         },
         deleteTache(){
-            if (window.confirm('Êtes-vous sûr de vouloir supprimer cette Liste de tâche ?')) {
+            if (window.confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')) {
                 tacheService.deleteTache(this.tache.id)
                     .then(
                         displayMsg({msg: "Tache a bien été supprimer", type:"success"})
                     )
                     .catch(err => console.log(err))
                 setTimeout(()=>{
-                    router.push('/admin/taches')
+                    router.push('/dashboard/taches')
 
                 },1500)
             }
@@ -143,31 +134,24 @@ export default {
 
 
     },
-    mounted() {
+    async mounted() {
+        const user = await userService.getUserByUsername(this.authUser.UserData.username)
+        this.me = user
+
         tacheService.getSingleTache(this.id)
             .then(res=> {
                 this.tache = res
                 this.tache.dateEcheance = this.formatDate(this.tache.dateEcheance);
-                console.log(this.tache)
+                if (this.me['hydra:member'][0].id !== this.tache.propid )
+                {
+                    router.push('/dashboard/taches')
+                }
             })
             .catch(err => console.log(err))
         userService.getAllUsers()
             .then(res=>{
                 this.users=res['hydra:member']
             })
-
-        userTacheService.getAllUserTacheAuteurByIdTache(this.id,"auteur")
-            .then(res=>{
-                console.log(res)
-                if (res['hydra:member'].length >0)
-                {
-                    this.tache_user_auteur = res['hydra:member'][0]
-
-                }
-
-
-            })
-            .catch(err=>console.log(err))
 
         userTacheService.getAllUserTacheObservateurByIdTache(this.id,"observateur")
             .then(res=>{
@@ -180,7 +164,9 @@ export default {
             })
             .catch(err=>console.log(err))
 
-        ListeTachesService.getAllListeTache()
+
+
+        ListeTachesService.getAllListeTacheByUserId(user['hydra:member'][0].id)
             .then(res=>{
                 this.liste_tache = res['hydra:member']
             })

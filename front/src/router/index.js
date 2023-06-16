@@ -24,6 +24,20 @@ import AdminListeTacheEdit from "@/views/admin/listeTache/ListeTacheEdit.vue"
 import AdminTacheNew from "@/views/admin/tache/TacheNew.vue"
 import AdminListeTacheNew from "@/views/admin/listeTache/ListeTacheNew.vue"
 import AdminListeTacheShow from "@/views/admin/listeTache/ListeTacheShow.vue"
+import DashboardTache from "@/views/dashboard/DashboardTache.vue";
+import DashboardTacheEdit from "@/views/dashboard/tache/TacheEdit.vue"
+import DashboardTacheNew from "@/views/dashboard/tache/TacheNew.vue"
+import DashboardListeTacheIndex from "@/views/dashboard/listeTache/ListeTacheIndex.vue"
+import DashboardListeTacheEdit from "@/views/dashboard/listeTache/ListeTacheEdit.vue"
+import DashboardListeTacheShow from "@/views/dashboard/listeTache/ListeTacheShow.vue"
+import DashboardListeTacheNew from "@/views/dashboard/listeTache/ListeTacheNew.vue"
+import DashboardTacheAffect from "@/views/dashboard/tache/TacheAffecter.vue"
+import ObservateurLayout from "@/views/observateur/ObservateurLayout.vue";
+import ObservateurHome from "@/views/observateur/ObservateurHome.vue";
+import {authObservateur} from "@/_helpers/auth-observateur";
+import ObservateurTacheIndex from "@/views/observateur/tache/ObservateurTacheIndex.vue";
+import observateurTacheIndex from "@/views/observateur/tache/ObservateurTacheIndex.vue";
+import ObservateurListeTache from "@/views/observateur/ObservateurListeTache.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,7 +55,15 @@ const router = createRouter({
       name:'dashboardhome',
       component: DashboardLayout,
       children: [
-        { path: '', name: 'dashboardhome', component: DashboardHome}
+        { path: '', name: 'dashboardhome', component: DashboardHome},
+        { path: 'taches', name: 'dashboardTache',component: DashboardTache},
+        { path: 'tache/edit/:id(\\d+)', name: 'dashboardTacheEdit', component: DashboardTacheEdit,props: true},
+        { path: 'tache/new' , name: 'dashboardTacheNew' ,component: DashboardTacheNew},
+        { path: 'listeTache' ,name:'dashboardListeTache' , component: DashboardListeTacheIndex},
+        { path: 'listeTache/edit/:id(\\d+)' , name: 'dashboardListeTacheEdit', component: DashboardListeTacheEdit,props: true},
+        { path: 'listeTache/tache/show/:id(\\d+)',name: 'dashboardListeTacheShow', component: DashboardListeTacheShow,props: true},
+        { path: 'listeTache/new' , name: 'dashboardListeTacheNew' , component: DashboardListeTacheNew},
+        { path: 'tache/affect',name:'dashboardTacheAffect' , component: DashboardTacheAffect},
       ]
     },
     {
@@ -59,6 +81,17 @@ const router = createRouter({
         { path: 'liste-taches', name: 'AdminListeTacheIndex', component: AdminListeTacheIndex},
         { path: 'liste-taches/edit/:id(\\d+)', name:'AdminListeTacheEdit',component: AdminListeTacheEdit, props:true},
         { path: 'liste-taches/new', name: 'AdminListeTacheNew' , component: AdminListeTacheNew}
+      ]
+    },
+    {
+      path: '/observateur',
+      name:'Observateur',
+      component: ObservateurLayout,
+      children:[
+        {path: '',name: 'observateurHome',component: ObservateurHome},
+        {path: 'taches',name: 'observateurTacheIndex' ,component: observateurTacheIndex},
+        {path: 'listetache',name: 'observateurListeTache',component: ObservateurListeTache},
+
       ]
     },
     {
@@ -111,6 +144,10 @@ router.beforeEach((to, from, next) =>{
   if (to.matched[0].name ==="dashboardhome")
   {
     authUser()
+  }
+  if (to.matched[0].name==="observateur")
+  {
+    authObservateur()
   }
   next()
 })

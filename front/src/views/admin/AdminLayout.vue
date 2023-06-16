@@ -20,6 +20,10 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="white" d="M16 17v2H2v-2s0-4 7-4s7 4 7 4m-3.5-9.5A3.5 3.5 0 1 0 9 11a3.5 3.5 0 0 0 3.5-3.5m3.44 5.5A5.32 5.32 0 0 1 18 17v2h4v-2s0-3.63-6.06-4M15 4a3.39 3.39 0 0 0-1.93.59a5 5 0 0 1 0 5.82A3.39 3.39 0 0 0 15 11a3.5 3.5 0 0 0 0-7Z"/></svg>
                 Users
             </div></a>
+            <button type="button" @click="logout()" class="text-decoration-none text-light fw-semibold" style="background-color: transparent;border: none">
+                <div class="admin-sidebar-col d-flex align-items-center pt-3 pb-3 px-5 rounded-pill" style="gap: 10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="white" d="m16 17l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5l-5 5ZM3 21V3h9v2H5v14h7v2H3Z"/></svg>                    Déconnexion
+                </div></button>
         </div>
 
         <RouterView />
@@ -28,8 +32,20 @@
 </template>
 
 <script>
+    import {userAuthStore} from "@/stores/auth";
+
     export default {
-        name: 'AdminLayout'
+        name: 'AdminLayout',
+        data(){
+            return{
+                authUser : userAuthStore()
+            }
+        },
+        methods:{
+            logout(){
+                this.authUser.logout()
+            }
+        }
     }
 </script>
 

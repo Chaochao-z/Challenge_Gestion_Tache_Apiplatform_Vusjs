@@ -25,10 +25,32 @@ class TacheService{
     }
   }
 
+  async getAllTacheSearch(id){
+    try {
+      const bearer = authHeader()
+      const res= await fetch(`${API_URL}/taches?propid=${id}`,{
+        headers: {
+          "Content-Type": "application/json",
+          ...authHeader()
+        },
+        method: "GET"
+      })
+      if(res.status === 200){
+        return await res.json();
+      }else{
+        return false;
+      }
+    }
+    catch (e) {
+      console.error(e.message);
+      return false
+    }
+  }
+
   async getTacheByListeId(id){
     try {
       const bearer = authHeader()
-      const res= await fetch(`${API_URL}/taches?listeTache=${id}`,{
+      const res= await fetch(`${API_URL}/taches?listeTache=${id}&priotity=asc`,{
         headers: {
           "Content-Type": "application/json",
           ...authHeader()
@@ -138,6 +160,50 @@ class TacheService{
       return false
     }
 
+  }
+
+  async getSingleTacheByUserTache(id){
+    try {
+      const bearer = authHeader()
+      const res= await fetch(`${API_URL}${id}`,{
+        headers: {
+          "Content-Type": "application/json",
+          ...authHeader()
+        },
+        method: "GET"
+      })
+      if(res.status === 200){
+        return await res.json();
+      }else{
+        return false;
+      }
+    }
+    catch (e) {
+      console.error(e.message);
+      return false
+    }
+  }
+
+  async getSingleTacheBySearch(titre){
+    try {
+      const bearer = authHeader()
+      const res= await fetch(`${API_URL}/taches?titre=${titre}`,{
+        headers: {
+          "Content-Type": "application/json",
+          ...authHeader()
+        },
+        method: "GET"
+      })
+      if(res.status === 200){
+        return await res.json();
+      }else{
+        return false;
+      }
+    }
+    catch (e) {
+      console.error(e.message);
+      return false
+    }
   }
 
 }

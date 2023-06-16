@@ -57,6 +57,13 @@ export default {
         listeTachesService.getAllListeTache()
             .then(res =>{
                 this.listeTaches = res['hydra:member']
+                this.listeTaches.sort(function compare(a,b){
+                    if (a.titre < b.titre)
+                        return -1;
+                    if (a.titre > b.titre )
+                        return 1;
+                    return 0;
+                })
             })
             .catch(err => console.log(err))
     }

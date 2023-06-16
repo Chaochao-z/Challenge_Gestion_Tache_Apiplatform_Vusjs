@@ -68,15 +68,24 @@ export default {
     components: {Btn,TacheAuteur},
     data(){
         return{
-            taches:[],
+            taches:{},
             moment
         }
     },
 
-    mounted() {
+    async mounted() {
         tacheService.getAllTache()
             .then(res =>{
                 this.taches = res['hydra:member']
+                console.log(this.taches)
+
+                this.taches.sort(function compare(a,b){
+                    if (a.priotity < b.priotity)
+                        return -1;
+                    if (a.priotity > b.priotity )
+                        return 1;
+                    return 0;
+                })
             })
             .catch(err => console.log(err))
     }

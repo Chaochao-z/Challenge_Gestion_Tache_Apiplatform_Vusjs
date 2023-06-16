@@ -86,6 +86,79 @@ class UserTacheService{
     }
   }
 
+  async newUserTache(tache){
+    try {
+      const res= await fetch(`${API_URL}/user_taches/new`,{
+        method:"POST",
+        headers:{
+          "Content-Type": "application/json",
+          ...authHeader()
+        },
+        body: JSON.stringify(tache)
+      })
+
+      if(res === 201)
+      {
+        return true
+      }
+      else {
+        return false
+      }
+
+    }
+    catch (e){
+      console.error(e.message)
+      return false
+    }
+
+  }
+
+  async GetAllByUserId(id){
+    try {
+      const res= await fetch(`${API_URL}/user_taches?user_id=/users/${id}`,{
+        headers: {
+          "Content-Type": "application/json",
+          ...authHeader()
+        },
+        method: "GET"
+      })
+      if(res.status === 200){
+        return await res.json();
+      }else{
+        return false;
+      }
+    }
+    catch (e) {
+      console.error(e.message);
+      return false
+    }
+  }
+
+  async DashboardUserTache(information){
+    try {
+      const res= await fetch(`${API_URL}/user_taches/dashboard/new`,{
+        method:"POST",
+        headers:{
+          "Content-Type": "application/json",
+          ...authHeader()
+        },
+        body: JSON.stringify(information)
+      })
+
+      if(res === 201)
+      {
+        return true
+      }
+      else {
+        return false
+      }
+
+    }
+    catch (e){
+      console.error(e.message)
+      return false
+    }
+  }
 
 
 }

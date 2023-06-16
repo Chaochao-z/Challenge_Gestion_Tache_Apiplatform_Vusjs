@@ -3,6 +3,7 @@ import Btn from "@/components/Common/Btn.vue";
 import {userAuthStore} from "@/stores/auth";
 import {TOKEN_STORAGE_KEY} from "@/constants/storage_keys";
 import jwt_decode from "jwt-decode";
+import router from "@/router";
 
     export default {
         name:"homeview",
@@ -19,6 +20,26 @@ import jwt_decode from "jwt-decode";
             logout(){
                 this.authStore.logout()
             }
+        },
+        mounted() {
+            let token = localStorage.getItem(TOKEN_STORAGE_KEY)
+            if(token)
+            {
+                const decodetoken = jwt_decode(token);
+                if (decodetoken.roles.includes("ROLE_ADMIN"))
+                {
+                    router.push('/admin')
+                }
+                if (decodetoken.roles.includes("ROLE_STANDARD"))
+                {
+                    router.push('/dashboard')
+                }
+                if (decodetoken.roles.includes("ROLE_OBSERVATEUR"))
+                {
+                    router.push('/observateur')
+                }
+
+            }
         }
     }
 </script>
@@ -29,7 +50,7 @@ import jwt_decode from "jwt-decode";
             <h1>Bienvenue sur le site Task Story</h1>
             <div class="d-flex justify-content-center" style="gap:10px">
                 <a href="/login" class="btn btn-primary">Connexion</a>
-                <a href="/login" class="btn btn-primary">Register</a>
+                <a href="/register" class="btn btn-primary">Register</a>
             </div>
 
         </div>

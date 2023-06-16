@@ -6,8 +6,16 @@ export function authUser(to)
   let token = localStorage.getItem(TOKEN_STORAGE_KEY)
   if(token)
   {
-    return true
+    const decodetoken = jwt_decode(token);
+    if (decodetoken.roles.includes("ROLE_STANDARD"))
+    {
+      return true
+    }
+    if (decodetoken.roles.includes("ROLE_ADMIN"))
+    {
+      return true
+    }
   }
 
-  router.push('/login')
+  router.push('/')
 }

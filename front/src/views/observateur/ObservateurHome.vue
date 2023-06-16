@@ -18,20 +18,20 @@
 <script>
 import {userAuthStore} from "@/stores/auth";
 
-    export default {
-        name: "DashoboardHome",
-        data(){
-            return{
-                authUser : userAuthStore()
-            }
+export default {
+    name: "ObservateurdHome",
+    data(){
+        return{
+            authUser : userAuthStore()
         }
     }
+}
 </script>
 
 <template>
     <div class="dashboardHome" style="width: 100%">
         <div class="dashboardHome-center">
-            <h1>Bienvenue Dans l'interface Standard</h1>
+            <h1>Bienvenue Dans l'interface Observateur</h1>
         </div>
     </div>
 </template>

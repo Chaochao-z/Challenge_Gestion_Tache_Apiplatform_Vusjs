@@ -48,6 +48,7 @@ class AuthService {
       return false;
     }
   }
+
 }
 
 export default new AuthService()

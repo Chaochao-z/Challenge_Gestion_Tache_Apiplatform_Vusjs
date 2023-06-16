@@ -45,47 +45,60 @@
 </template>
 
 <script>
+import {userAuthStore} from "@/stores/auth";
+import userService from "@/services/userService";
+import userTacheService from "@/services/userTacheService";
+import listeTachesService from "@/services/listeTachesService";
+import ListeTachesService from "@/services/listeTachesService";
+import router from "@/router";
 import tacheService from "@/services/tacheService";
 import {displayMsg} from "@/utils/toast";
-import router from "@/router";
-import ListeTachesService from "@/services/listeTachesService";
 
 export default {
-    name: "AdminTacheNew",
+    name: "dashboardTacheNew",
     data(){
         return{
+            authUser : userAuthStore(),
             tache:{},
-            liste:{}
-
+            liste:{},
+            me:{},
+            information:{}
         }
     },
     methods:{
         create(){
-            console.log(this.tache)
             if (this.tache.priotity == "1" || this.tache.priotity == "2" || this.tache.priotity == "3" )
             {
                 this.tache.priotity = parseInt(this.tache.priotity)
             }
             else {
                 throw new Error("Erreur Formulaire")
-                router.push('/admin/taches')
+                router.push('/dashboard/taches')
             }
+            this.tache.propid = this.me.id
             tacheService.newTache(this.tache)
                 .then(displayMsg({msg: "Tache a bien été crée", type:"success"}))
-                .catch(err=>console.log(err))
+                .catch(err => {
+                    displayMsg({msg:"Titre déjà existé",type:"error"})
+                    console.log(err)})
+
             setTimeout(()=>{
-                router.push('/admin/taches')
+                router.push('/dashboard/taches')
 
             },1500)
         }
     },
-    mounted() {
-        ListeTachesService.getAllListeTache()
-            .then(res=> {
+    async mounted() {
+        const res = await userService.getUserByUsername(this.authUser.UserData.username)
+        this.me = res['hydra:member'][0]
+
+        ListeTachesService.getAllListeTacheByUserId(this.me.id)
+            .then(res=>{
                 this.liste = res['hydra:member']
-                console.log(this.liste)
             })
             .catch(err=>console.log(err))
+
+
     }
 }
 </script>

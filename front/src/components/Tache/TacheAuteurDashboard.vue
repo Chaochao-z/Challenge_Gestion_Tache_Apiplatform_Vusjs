@@ -9,7 +9,7 @@ import userTacheService from "@/services/userTacheService";
 import userService from "@/services/userService";
 
 export default {
-    name: "TacheAuteur",
+    name: "TacheAuteurDashboard",
     props:['userTaches'],
     data(){
         return{
@@ -29,6 +29,7 @@ export default {
                     auteur = resq
                 }
             }
+            console.log(auteur)
             return auteur
         }
     },

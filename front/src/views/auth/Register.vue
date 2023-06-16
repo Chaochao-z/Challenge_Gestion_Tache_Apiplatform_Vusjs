@@ -115,7 +115,7 @@ export default {
                     if (res) {
                         //todo redirect to home
                         setTimeout(() => {
-                            router.push({ name: 'home' });
+                            router.push({ name: 'homeview' });
                         }, 2000);
                     }else{
                         throw new Error("Une erreur est survenue lors de l'inscription");
