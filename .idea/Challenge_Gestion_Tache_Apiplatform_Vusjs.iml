@@ -134,6 +134,7 @@
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/symfony/polyfill-intl-idn" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/symfony/mailer" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/egulias/email-validator" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/fakerphp/faker" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

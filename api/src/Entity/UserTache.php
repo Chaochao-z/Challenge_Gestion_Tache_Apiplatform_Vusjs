@@ -2,7 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Controller\UserDashboardTacheController;
+use App\Controller\UserTacheController;
 use App\Repository\UserTacheRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,6 +18,33 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserTacheRepository::class)]
 #[ApiResource]
+#[ApiFilter(SearchFilter::class, properties: ['tache' => 'exact','role'=>'exact','user_id'=>'exact'])]
+
+#[GetCollection(
+
+
+)]
+
+#[Get(
+
+)]
+
+#[Post(
+
+)]
+
+#[Post(
+    uriTemplate: '/user_taches/new',
+    controller: UserTacheController::class
+)]
+
+#[Post(
+    uriTemplate: '/user_taches/dashboard/new',
+    controller: UserDashboardTacheController::class
+)]
+
+#[Patch(
+)]
 class UserTache
 {
     #[ORM\Id]
@@ -34,7 +69,10 @@ class UserTache
 
     public function __construct()
     {
-        $this->tache = new ArrayCollection();
+        if ($this->createdAt == null){
+            $this->createdAt = new \DateTimeImmutable();
+        }
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

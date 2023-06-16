@@ -38,12 +38,12 @@ class RegisterController extends AbstractController
         $user = new User();
         $user->setUsername($username);
         $user->setMail($email);
-        $user->setRoles($roles);
+        $user->setRoles(['ROLE_OBSERVATEUR']);
         $user->setPassword($userPasswordHasher->hashPassword($user,$password));
         $user->setToken(bin2hex(random_bytes(32)));
         $user->setTokenEcheance(new \DateTimeImmutable());
         $emailconfig = (new TemplatedEmail())
-            ->from(new Address('panama@easylocmoto.fr','Panama Agency'))
+            ->from(new Address('panama@easylocmoto.fr','Tache Story'))
             ->to($email)
             ->subject('Verify your account')
             ->htmlTemplate('mail/Verify-account.html.twig')

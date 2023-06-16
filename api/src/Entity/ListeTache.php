@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ListeTacheRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ListeTacheRepository::class)]
 #[ApiResource]
+#[ApiFilter(SearchFilter::class, properties: ['user_id' => 'exact'])]
+
 class ListeTache
 {
     #[ORM\Id]
@@ -17,10 +21,10 @@ class ListeTache
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $titre = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 7000)]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -32,12 +36,17 @@ class ListeTache
     #[ORM\ManyToOne(inversedBy: 'LesLiestTaches')]
     private ?User $user_id = null;
 
-    #[ORM\OneToMany(mappedBy: 'listeTache', targetEntity: Tache::class)]
+    #[ORM\OneToMany(mappedBy: 'listeTache', targetEntity: Tache::class,cascade: ['persist', 'remove'])]
     private Collection $LesTaches;
 
     public function __construct()
     {
         $this->LesTaches = new ArrayCollection();
+        if ($this->createdAt == null)
+        {
+            $this->createdAt = new \DateTimeImmutable();
+        }
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

@@ -47,7 +47,9 @@ security:
         - { path: ^/greetings, roles: PUBLIC_ACCESS, method: GET }
         - { path: ^/greetings, roles: PUBLIC_ACCESS, method: POST }
         - { path: ^/register, roles: PUBLIC_ACCESS, method: POST }
+        - { path: ^/users/verify_email, roles: PUBLIC_ACCESS, method: PATCH }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+        
 
 when@test:
     security:

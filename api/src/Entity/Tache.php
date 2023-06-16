@@ -2,15 +2,25 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
 use App\Repository\TacheRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Elasticsearch\Filter\OrderFilter;
+
 
 #[ORM\Entity(repositoryClass: TacheRepository::class)]
 #[ApiResource]
+#[ApiFilter(SearchFilter::class, properties: ['listeTache' => 'exact','titre'=>'exact','propid' => 'exact'])]
+#[ApiFilter(OrderFilter::class, properties: ['priotity' => 'asc', 'date_echeance' => 'asc'])]
+
+
 class Tache
 {
     #[ORM\Id]
@@ -18,10 +28,10 @@ class Tache
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $titre = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 7000)]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -39,15 +49,27 @@ class Tache
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'tache', targetEntity: UserTache::class)]
+    #[ORM\OneToMany(mappedBy: 'tache', targetEntity: UserTache::class,cascade: ['persist', 'remove'])]
     private Collection $userTaches;
 
     #[ORM\ManyToOne(inversedBy: 'LesTaches')]
     private ?ListeTache $listeTache = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $propid = null;
+
     public function __construct()
     {
         $this->userTaches = new ArrayCollection();
+        if ($this->createdAt == null)
+        {
+            $this->createdAt = new \DateTimeImmutable();
+        }
+        $this->updatedAt = new  \DateTimeImmutable();
+        if ($this->status == null)
+        {
+            $this->status = 1;
+        }
     }
 
     public function getId(): ?int
@@ -184,6 +206,18 @@ class Tache
     public function setListeTache(?ListeTache $listeTache): self
     {
         $this->listeTache = $listeTache;
+
+        return $this;
+    }
+
+    public function getPropid(): ?int
+    {
+        return $this->propid;
+    }
+
+    public function setPropid(?int $propid): self
+    {
+        $this->propid = $propid;
 
         return $this;
     }

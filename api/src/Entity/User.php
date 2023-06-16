@@ -2,12 +2,20 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Get;
 use App\Controller\RegisterController;
+use App\Dto\UserUpdateDto;
+use App\Dto\UserVerifyEmailDto;
 use App\Repository\UserRepository;
+use App\State\UserUpdateProcessor;
+use App\State\UserVerifyEmailProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -16,14 +24,12 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ApiResource]
+#[ApiFilter(SearchFilter::class, properties: ['username' => 'exact'])]
+
 #[Get(
-    normalizationContext: [
-        'groups' => ['user_get']
-    ],
     security: 'is_granted("ROLE_ADMIN") or object == user'
 )]
 #[GetCollection(
-    security: 'is_granted("ROLE_ADMIN")'
 
 )]
 #[Post(
@@ -33,6 +39,22 @@ use Symfony\Component\Security\Core\User\UserInterface;
         'groups' => ['user_register']
     ]
 )]
+#[Patch(
+    uriTemplate: '/users/verify_email',
+    input: UserVerifyEmailDto::class,
+    output: User::class,
+    processor: UserVerifyEmailProcessor::class,
+    status: 204
+)]
+
+#[Patch(
+    security: 'is_granted("ROLE_ADMIN") or object == user'
+)]
+
+#[Delete(
+    security: 'is_granted("ROLE_ADMIN")'
+)]
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -76,10 +98,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user_register','user_get','user_collection'])]
     private ?string $mail = null;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: ListeTache::class)]
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: ListeTache::class,cascade: ['persist', 'remove'])]
     private Collection $LesLiestTaches;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: UserTache::class)]
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: UserTache::class,cascade: ['persist', 'remove'])]
     private Collection $userTaches;
 
     #[ORM\Column]
