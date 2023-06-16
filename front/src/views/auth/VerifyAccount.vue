@@ -26,14 +26,33 @@ onMounted(() => {
 })
 </script>
 <template>
-    <section v-if="loading">Loading...</section>
-    <template v-else>
-        <h1>Verify your account</h1>
-        <section v-if="error">
-            <p>{{ error }}</p>
-        </section>
-        <section v-else>
-            <p>Account verified</p>
-        </section>
-    </template>
+    <div class="verif">
+        <div class="verif-center">
+            <section v-if="loading">Loading...</section>
+            <template v-else>
+                <h1>Verify your account</h1>
+                <section v-if="error">
+                    <p>{{ error }}</p>
+                </section>
+                <section v-else>
+                    <p>Account verified</p>
+                </section>
+            </template>
+        </div>
+    </div>
 </template>
+<style scoped>
+.verif{
+    height: 100vh;
+    background: linear-gradient(#6e68ee,#20bdce);
+    display: flex; /* Utilisez flex pour aligner les éléments */
+    justify-content: center; /* Centre horizontalement les éléments */
+    align-items: center; /* Centre verticalement les éléments */
+}
+.verif-center{
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    color: black;
+}
+</style>

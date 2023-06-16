@@ -106,6 +106,29 @@ class UserService{
       return false;
     }
   }
+
+  async deleteUser(id){
+    try {
+      const res = await fetch(`${API_URL}/users/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          ...authHeader()
+        },
+      });
+
+      if (res.status === 204){
+        return true
+      }
+      if (res.status === 404)
+      {return false
+      }
+
+    }catch (e) {
+      console.error(e.message);
+      return false
+    }
+  }
 }
 
 export default new UserService()

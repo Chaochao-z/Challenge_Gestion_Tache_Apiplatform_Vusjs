@@ -24,9 +24,29 @@ import jwt_decode from "jwt-decode";
 </script>
 
 <template>
-    <main>
-        <h1>Welcome to Home</h1>
-    </main>
+    <div class="home">
+        <div class="home-center">
+            <h1>Bienvenue sur le site Task Story</h1>
+            <div class="d-flex justify-content-center" style="gap:10px">
+                <a href="/login" class="btn btn-primary">Connexion</a>
+                <a href="/login" class="btn btn-primary">Register</a>
+            </div>
+
+        </div>
+    </div>
 </template>
 
-<style></style>
+<style>
+.home{
+    height: 100vh;
+    background: linear-gradient(#6e68ee,#20bdce);
+    display: flex; /* Utilisez flex pour aligner les éléments */
+    justify-content: center; /* Centre horizontalement les éléments */
+    align-items: center; /* Centre verticalement les éléments */
+}
+.home-center{
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+}
+</style>

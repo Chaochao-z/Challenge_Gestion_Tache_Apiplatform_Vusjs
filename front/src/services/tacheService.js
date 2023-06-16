@@ -25,6 +25,28 @@ class TacheService{
     }
   }
 
+  async getTacheByListeId(id){
+    try {
+      const bearer = authHeader()
+      const res= await fetch(`${API_URL}/taches?listeTache=${id}`,{
+        headers: {
+          "Content-Type": "application/json",
+          ...authHeader()
+        },
+        method: "GET"
+      })
+      if(res.status === 200){
+        return await res.json();
+      }else{
+        return false;
+      }
+    }
+    catch (e) {
+      console.error(e.message);
+      return false
+    }
+  }
+
   async getSingleTache(id){
     try {
       const bearer = authHeader()

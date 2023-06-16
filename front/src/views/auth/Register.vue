@@ -1,25 +1,32 @@
 <template>
-    <form @submit.prevent="onSubmit" method="POST">
-        <div class="formGroup">
-            <label>Username</label>
-            <InputField type="text" placeholder="Username" name="username" id="username" v-model="formUser.username" />
+    <div class="register">
+        <div class="register-center">
+            <form @submit.prevent="onSubmit" method="POST" class="bg-light m-auto p-5 rounded" style="width: 800px;">
+                <h2 class="text-center">Register</h2>
+                <div class="d-flex justify-content-between mt-3 mb-3 align-items-center">
+                    <label style="width: 200px">Username</label>
+                    <InputField class="form-control" type="text" placeholder="Username" name="username" id="username" v-model="formUser.username" />
+                </div>
+                <div class="d-flex justify-content-between mt-3 mb-3 align-items-center">
+                    <label style="width: 200px">Password</label>
+                    <InputField class="form-control" type="password" placeholder="Mots de passe" name="password" id="password" v-model="formUser.password" />
+                </div>
+                <div class="d-flex justify-content-between mt-3 mb-3 align-items-center">
+                    <label style="width: 200px">Password Comfirmation</label>
+                    <InputField class="form-control" type="password" placeholder="Mots de passe Confirmation" name="passwordConfirmation" id="passwordConfirmation" v-model="formUser.passwordConfirmation" />
+                </div>
+                <div class="d-flex justify-content-between mt-3 mb-3 align-items-center">
+                    <label style="width: 200px">Email</label>
+                    <InputField class="form-control" type="text" placeholder="Email" name="email" id="email" v-model="formUser.email" />
+                </div>
+                <div class="formGroup">
+                    <button class="btn btn-primary" type="submit">Connexion</button>
+                </div>
+            </form>
         </div>
-        <div class="formGroup">
-            <label>Password</label>
-            <InputField type="password" placeholder="Mots de passe" name="password" id="password" v-model="formUser.password" />
-        </div>
-        <div class="formGroup">
-            <label>Password Comfirmation</label>
-            <InputField type="password" placeholder="Mots de passe Confirmation" name="passwordConfirmation" id="passwordConfirmation" v-model="formUser.passwordConfirmation" />
-        </div>
-        <div class="formGroup">
-            <label>Email</label>
-            <InputField type="text" placeholder="Email" name="email" id="email" v-model="formUser.email" />
-        </div>
-        <div class="formGroup">
-            <button type="submit">Connexion</button>
-        </div>
-    </form>
+
+    </div>
+
 </template>
 
 <script>
@@ -123,5 +130,16 @@ export default {
 </script>
 
 <style scoped>
-
+.register{
+    height: 100vh;
+    background: linear-gradient(#6e68ee,#20bdce);
+    display: flex; /* Utilisez flex pour aligner les éléments */
+    justify-content: center; /* Centre horizontalement les éléments */
+    align-items: center; /* Centre verticalement les éléments */
+}
+.register-center{
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+}
 </style>

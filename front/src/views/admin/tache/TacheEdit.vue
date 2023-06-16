@@ -31,6 +31,18 @@
                     <option value=1>Terminée</option>
                 </select>
             </div>
+            <div class="d-flex justify-content-between mt-3 mb-3 align-items-center">
+                <label for="tache_auteur" style="width: 200px">Auteur : </label>
+                <select class="form-control" id="tache_auteur" v-model="tache_user_auteur.userId" required>
+                    <option v-for="user in users" :key="user.id" :value="user['@id']">{{ user.username }}</option>
+                </select>
+            </div>
+            <div class="d-flex justify-content-between mt-3 mb-3 align-items-center">
+                <label for="tache_observateur" style="width: 200px">Observateur : </label>
+                <select class="form-control" id="tache_observateur" v-model="tache_user_observateur.userId" required>
+                    <option v-for="user in users" :key="user.id" :value="user['@id']">{{ user.username }}</option>
+                </select>
+            </div>
             <div class="formGroup">
                 <button class="btn btn-primary" type="submit">Modifier</button>
             </div>
@@ -49,12 +61,17 @@
 import tacheService from "@/services/tacheService";
 import {displayMsg} from "@/utils/toast";
 import router from "@/router";
+import userTacheService from "@/services/userTacheService";
+import userService from "@/services/userService";
 export default {
     name: "AdminTacheEdit",
     props:['id'],
     data(){
         return{
-            tache:{}
+            tache:{},
+            tache_user_observateur:{},
+            tache_user_auteur:{},
+            users:{}
         }
     },
     methods:{
@@ -62,6 +79,12 @@ export default {
             this.tache.priotity = parseInt(this.tache.priotity)
             tacheService.updateTache(this.tache)
                 .then(displayMsg({msg: "Tache a bien été modifier", type:"success"}))
+                .catch(err => console.log(err))
+            userTacheService.updateUserTache(this.tache_user_auteur)
+                .then()
+                .catch(err => console.log(err))
+            userTacheService.updateUserTache(this.tache_user_observateur)
+                .then()
                 .catch(err => console.log(err))
         },
         formatDate(dateString) {
@@ -87,7 +110,9 @@ export default {
             }
 
 
-        }
+        },
+
+
     },
     mounted() {
         tacheService.getSingleTache(this.id)
@@ -96,6 +121,20 @@ export default {
                 this.tache.dateEcheance = this.formatDate(this.tache.dateEcheance);
             })
             .catch(err => console.log(err))
+        userTacheService.getAllUserTacheAuteurByIdTache(this.id,"auteur")
+            .then(res=>{
+                this.tache_user_auteur = res['hydra:member'][0]
+            })
+            .catch(err=>console.log(err))
+        userTacheService.getAllUserTacheObservateurByIdTache(this.id,"observateur")
+            .then(res=>{
+                this.tache_user_observateur = res['hydra:member'][0]
+            })
+            .catch(err=>console.log(err))
+        userService.getAllUsers()
+            .then(res=>{
+                this.users=res['hydra:member']
+            })
     }
 }
 </script>

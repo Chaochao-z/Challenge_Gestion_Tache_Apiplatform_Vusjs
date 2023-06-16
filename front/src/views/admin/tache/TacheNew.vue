@@ -1,32 +1,41 @@
 <template>
-    <form @submit.prevent="create" method="POST">
-        <div class="formGroup">
-            <label for="tache_titre">Titre </label>
-            <input type="text" id="tache_titre" v-model="tache.titre" required />
-        </div>
-        <div class="formGroup">
-            <label for="tache_description">Description </label>
-            <input type="text" id="tache_description" v-model="tache.description" required />
-        </div>
-        <div class="formGroup">
-            <label for="tache_priotity">Priorité </label>
-<!--
-            <input type="text" id="tache_priotity" v-model="tache.priotity" />
--->
-            <select id="tache_priotity" v-model="tache.priotity" required>
-                <option value=1>Urgent</option>
-                <option value=2>Moins Urgent</option>
-                <option value=3>Non Urgent</option>
-            </select>
-        </div>
-        <div class="formGroup">
-            <label for="tache_dateEcheance">Date Echéance </label>
-            <input type="datetime-local" id="tache_dateEcheance" v-model="tache.dateEcheance" required />
-        </div>
-        <div class="formGroup">
-            <button type="submit">Crée</button>
-        </div>
-    </form>
+    <div style="width: 100%" class="p-5 adminEditBox">
+        <h1 class="text-light text-center mb-3">New Tache</h1>
+        <form @submit.prevent="create()" class="bg-light m-auto p-5 rounded" style="width: 800px;">
+            <h2>Create Task</h2>
+            <div class="d-flex justify-content-between mt-3 mb-3 align-items-center">
+                <label for="tache_titre" style="width: 200px">Titre :</label>
+                <input class="form-control" type="text" id="tache_titre" v-model="tache.titre" required/>
+            </div>
+
+            <div class="d-flex justify-content-between mt-3 mb-3">
+                <label for="tache_description" style="width: 200px">Description :</label>
+                <textarea class="form-control" rows="8" id="tache_description" v-model="tache.description" required> </textarea>
+            </div>
+            <div class="d-flex justify-content-between mt-3 mb-3 align-items-center">
+                <label for="tache_priotity" style="width: 200px">Priorité </label>
+                <select class="form-control"   id="tache_priotity" v-model="tache.priotity" required>
+                    <option value=1>Urgent</option>
+                    <option value=2>Moins Urgent</option>
+                    <option value=3>Non Urgent</option>
+                </select>
+            </div>
+            <div class="d-flex justify-content-between mt-3 mb-3 align-items-center">
+                <label for="tache_dateEcheance" style="width: 200px">Date Echéance :</label>
+                <input class="form-control"  type="datetime-local" id="tache_dateEcheance" v-model="tache.dateEcheance" required />
+            </div>
+            <div class="d-flex justify-content-between mt-3 mb-3 align-items-center">
+                <label for="tache_status" style="width: 200px">Status : </label>
+                <select class="form-control" id="tache_status" v-model="tache.status" required>
+                    <option value=0>En Cours</option>
+                    <option value=1>Terminée</option>
+                </select>
+            </div>
+            <div class="formGroup">
+                <button class="btn btn-primary" type="submit">Créer</button>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script>
